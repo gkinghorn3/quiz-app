@@ -7,10 +7,12 @@ export default function Timer({ timeOut, onTimeOut }) {
     
 
     useEffect(() => {
+        console.log('setting timeout');
         setTimeout(onTimeOut, timeOut);
     }, [onTimeOut, timeOut]);
 
     useEffect(() => {
+        console.log('setting interval');
         setInterval(
             () => setRemainingTime((prev) => prev - 100),
             100

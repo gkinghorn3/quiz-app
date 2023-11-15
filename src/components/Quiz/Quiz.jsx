@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
+import { shuffleAnswers } from "../../utils";
 import QUESTIONS from "../../questions";
 import quizCompleteImg from "../../assets/quiz-complete.png";
 
@@ -10,26 +11,13 @@ export default function Quiz() {
 
   const ActiveQuestionIndex = userAnswers.length;
 
-  console.log(ActiveQuestionIndex)
-
   const quizIsComplete = ActiveQuestionIndex === QUESTIONS.length;
-
-  // using Fisher-Yates shuffle algorithm
-  const shuffleAnswers = (array) => {
-    // Loop over the array from the last element to the first
-    for (let i = array.length - 1; i > 0; i--) {
-      // Pick a random index from 0 to i
-      let j = Math.floor(Math.random() * (i + 1));
-      // Swap the elements at i and j
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-
-    return array;
-  };
 
   const handleSelectAnswer = (selectedAnswer) => {
     setUserAnswers((prev) => [...prev, selectedAnswer]);
   };
+
+  const handleSkipAnswer = useCallback(() => handleSelectAnswer(null), []);
 
   if (quizIsComplete) {
     return (
@@ -45,7 +33,7 @@ export default function Quiz() {
   return (
     <div id="quiz">
       <div id="question">
-      <Timer timeOut={10000} onTimeOut={() => handleSelectAnswer(null)} />
+      <Timer timeOut={10000} onTimeOut={} />
         <h2>{QUESTIONS[ActiveQuestionIndex].text}</h2>
         
         <ul id="answers">
