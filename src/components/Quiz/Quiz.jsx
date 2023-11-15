@@ -13,7 +13,7 @@ export default function Quiz() {
   // shuffledAnswers.sort(() => Math.random() - 0.5);
 
   // using Fisher-Yates shuffle algorithm
-  const shuffleQuestions = (array) => {
+  const shuffleAnswers = (array) => {
     // Loop over the array from the last element to the first
     for (let i = array.length - 1; i > 0; i--) {
       // Pick a random index from 0 to i
