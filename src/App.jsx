@@ -1,10 +1,14 @@
 
-import { Header } from './components';
+import { Header, Quiz } from './components';
 
 function App() {
 
     return (
-        <Header />
+        <>
+            <Header />
+            <Quiz />
+        </>
+        
     )
 }
 
