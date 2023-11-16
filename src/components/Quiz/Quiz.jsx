@@ -25,6 +25,7 @@ export default function Quiz() {
       <div id="summary">
         <img src={quizCompleteImg} alt="trophy icon" />
         <h2>Quiz Complete</h2>
+        
       </div>
     );
   }
@@ -34,7 +35,7 @@ export default function Quiz() {
   return (
     <div id="quiz">
       <div id="question">
-      <Timer timeOut={10000} onTimeOut={handleSkipAnswer}  />
+      <Timer key={ActiveQuestionIndex} timeOut={10000} onTimeOut={handleSkipAnswer}  />
         <h2>{QUESTIONS[ActiveQuestionIndex].text}</h2>
         
         <ul id="answers">
