@@ -9,7 +9,7 @@ export default function Timer({ timeOut, onTimeOut }) {
     useEffect(() => {
         console.log('setting timeout');
         setTimeout(onTimeOut, timeOut);
-    }, [onTimeOut, timeOut]);
+    }, [timeOut, onTimeOut]);
 
     useEffect(() => {
         console.log('setting interval');
@@ -17,7 +17,7 @@ export default function Timer({ timeOut, onTimeOut }) {
             () => setRemainingTime((prev) => prev - 100),
             100
         );
-    }, [])
+    }, []);
 
   
 
