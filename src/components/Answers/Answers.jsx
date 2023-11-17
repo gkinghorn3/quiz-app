@@ -2,7 +2,12 @@ import { useRef } from "react";
 
 import { shuffleAnswers } from "../../utils";
 
-export default function Answers({ answers, selectedAnswer, answerState, onSelect }) {
+export default function Answers({
+  answers,
+  selectedAnswer,
+  answerState,
+  onSelect,
+}) {
   const shuffledAnswers = useRef();
 
   if (!shuffledAnswers.current) {
@@ -11,7 +16,6 @@ export default function Answers({ answers, selectedAnswer, answerState, onSelect
     // shuffle the answers using the shuffleAnswers function that has been imported from .utils
     shuffledAnswers.current = shuffleAnswers(newQuestionAnswerArray);
   }
-
 
   return (
     <ul id="answers">
@@ -47,4 +51,3 @@ export default function Answers({ answers, selectedAnswer, answerState, onSelect
     </ul>
   );
 }
-

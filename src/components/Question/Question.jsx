@@ -10,7 +10,6 @@ export default function Question({ index, onSelectAnswer, onSkipAnswer }) {
     isCorrect: null,
   });
 
-  let timeoutId = null;
 
   function handleSelectAnswer(answer) {
     setAnswer({
