@@ -1,10 +1,9 @@
 import { useState, useCallback } from "react";
 
-import { shuffleAnswers } from "../../utils";
 import QUESTIONS from "../../questions";
 import quizCompleteImg from "../../assets/quiz-complete.png";
 
-import { Timer } from "../";
+import { Question } from "../";
 
 export default function Quiz() {
   const [userAnswers, setUserAnswers] = useState([]);
@@ -13,9 +12,9 @@ export default function Quiz() {
   const [answerState, setAnswerState] = useState("");
 
   // if user has not answered, question index = length of user asnwer array (resulting in incre
-  //  menting the index). if user has answered, question index = length of user answer array - 1 which will keep 
-  // hold the question allowing the styling to be added and seen on the buttons based on the user answer. 
-  // after two seconds answerState is set to "" which will increment the active question index 
+  //  menting the index). if user has answered, question index = length of user answer array - 1 which will keep
+  // hold the question allowing the styling to be added and seen on the buttons based on the user answer.
+  // after two seconds answerState is set to "" which will increment the active question index
   const ActiveQuestionIndex =
     answerState === "" ? userAnswers.length : userAnswers.length - 1;
 
@@ -24,7 +23,6 @@ export default function Quiz() {
   // handle users answer
   const handleSelectAnswer = useCallback(
     (selectedAnswer) => {
-      
       setAnswerState("answered");
       setUserAnswers((prev) => [...prev, selectedAnswer]);
 
@@ -61,48 +59,20 @@ export default function Quiz() {
     );
   }
 
-  //create new array of answers to be shuffed (leaving the intial one untouched to indentify the correct answer)
-  const shuffledAnswers = [...QUESTIONS[ActiveQuestionIndex].answers];
-
   return (
     <div id="quiz">
-      <div id="question">
-        <Timer
-          key={ActiveQuestionIndex}
-          timeOut={10000}
-          onTimeOut={handleSkipAnswer}
+     
+        <Question 
+        key={ActiveQuestionIndex}
+        onSelectAnswer={handleSelectAnswer}
+        answers = {QUESTIONS[ActiveQuestionIndex].answers}
+        questionText = {QUESTIONS[ActiveQuestionIndex].text}
+        handleSkipAnswer = {handleSkipAnswer}
+        selectedAnswer={userAnswers[userAnswers.length - 1]}
+        answerState={answerState}
+        onSkipAnswer={handleSkipAnswer}
         />
-        <h2>{QUESTIONS[ActiveQuestionIndex].text}</h2>
 
-        <ul id="answers">
-
-          // take shuffled answer and map them to buttons with styling dependant on answerState 
-          {shuffleAnswers(shuffledAnswers).map((answer) => {
-            let cssClasses = "";  
-            const isSelected = userAnswers[userAnswers.length - 1] === answer;
-
-            // if user has answered, and isSelected is true set className to selected
-            if (answerState === 'answered' && isSelected) {
-              cssClasses = "selected";
-            }
-
-            // if user has answered, answer state is correct or wrong and is selectet, set className to correct or wrong
-            if ((answerState === 'correct' || answerState === 'wrong') && isSelected) {
-              cssClasses = answerState;
-            }
-
-
-            return (
-              <li key={answer} className="answer">
-              <button onClick={() => handleSelectAnswer(answer)} className={cssClasses}>
-                {answer}
-              </button>
-            </li>)
-
-            
-            })}
-        </ul>
-      </div>
     </div>
   );
 }
