@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 
 import QUESTIONS from "../../questions.js";
 
@@ -10,32 +10,36 @@ export default function Question({ index, onSelectAnswer, onSkipAnswer }) {
     isCorrect: null,
   });
 
+  let timer = 10000;
 
-  function handleSelectAnswer(answer) {
-    setAnswer({
-      selectedAnswer: answer,
-      isCorrect: null,
-    });
+  if (answer.selectedAnswer) {
+    timer = 1000;
+  }
 
-    setTimeout(() => {
+  if (answer.isCorrect !== null) {
+    timer = 2000;
+  }
+
+  const handleSelectAnswer = useCallback(
+    (answer) => {
       setAnswer({
         selectedAnswer: answer,
-        isCorrect: QUESTIONS[index].answers[0] === answer,
+        isCorrect: null,
       });
 
       setTimeout(() => {
-        onSelectAnswer(answer);
-      }, 2000);
-    }, 1000);
-  }
+        setAnswer({
+          selectedAnswer: answer,
+          isCorrect: QUESTIONS[index].answers[0] === answer,
+        });
 
-  useEffect(() => {
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, []);
+        setTimeout(() => {
+          onSelectAnswer(answer);
+        }, 2000);
+      }, 1000);
+    },
+    [onSelectAnswer]
+  );
 
   let answerState = "";
 
@@ -47,7 +51,12 @@ export default function Question({ index, onSelectAnswer, onSkipAnswer }) {
 
   return (
     <div id="question">
-      <Timer timeOut={10000} onTimeOut={onSkipAnswer} />
+      <Timer
+        key={timer}
+        timeOut={timer}
+        onTimeOut={answer.selectedAnswer === "" ? onSkipAnswer : null}
+        mode={answerState}
+      />
       <h2>{QUESTIONS[index].text}</h2>
 
       <Answers

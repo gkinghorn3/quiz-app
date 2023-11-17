@@ -8,6 +8,8 @@ export default function Answers({
   answerState,
   onSelect,
 }) {
+
+  
   const shuffledAnswers = useRef();
 
   if (!shuffledAnswers.current) {
