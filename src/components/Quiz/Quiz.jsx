@@ -9,9 +9,13 @@ import { Timer } from "../";
 export default function Quiz() {
   const [userAnswers, setUserAnswers] = useState([]);
 
-  // state used to monitor if user answered correctly or not 
+  // state used to monitor if user answered correctly or not & also derive logic for setting active question index
   const [answerState, setAnswerState] = useState("");
 
+  // if user has not answered, question index = length of user asnwer array (resulting in incre
+  //  menting the index). if user has answered, question index = length of user answer array - 1 which will keep 
+  // hold the question allowing the styling to be added and seen on the buttons based on the user answer. 
+  // after two seconds answerState is set to "" which will increment the active question index 
   const ActiveQuestionIndex =
     answerState === "" ? userAnswers.length : userAnswers.length - 1;
 
@@ -20,10 +24,11 @@ export default function Quiz() {
   // handle users answer
   const handleSelectAnswer = useCallback(
     (selectedAnswer) => {
+      
       setAnswerState("answered");
-
       setUserAnswers((prev) => [...prev, selectedAnswer]);
 
+      //wait 1 second before setting answer state to correct or wrong
       setTimeout(() => {
         if (selectedAnswer === QUESTIONS[ActiveQuestionIndex].answers[0]) {
           setAnswerState("correct");
@@ -31,6 +36,7 @@ export default function Quiz() {
           setAnswerState("wrong");
         }
 
+        // wait 2 seconds before setting answer state to empty again which will increment the active question index
         setTimeout(() => {
           setAnswerState("");
         }, 2000);
